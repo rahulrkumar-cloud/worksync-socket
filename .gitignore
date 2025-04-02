@@ -1,0 +1,6 @@
+# Ignore environment variables and dependencies
+node_modules/
+.env
+.next/
+out/
+.DS_Store
