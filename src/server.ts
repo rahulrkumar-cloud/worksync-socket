@@ -11,8 +11,8 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"]
-  }
+    methods: ["GET", "POST"],
+  },
 });
 
 app.use(cors());
@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   socket.on("message", (data) => {
-    io.emit("message", data); // Broadcast message
+    io.emit("message", data); // ✅ Broadcast message to all users
   });
 
   socket.on("disconnect", () => {
