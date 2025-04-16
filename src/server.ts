@@ -68,6 +68,35 @@ io.on("connection", (socket) => {
     console.log(`❌ User ${disconnectedUserId} disconnected`);
     console.log(`🛑 Socket disconnected: ${socket.id}`);
   });
+
+  // Handle initiating a call
+  socket.on("call-user", ({ to, offer }) => {
+    const targetSocketId = users.get(String(to));
+    if (targetSocketId) {
+      io.to(targetSocketId).emit("incoming-call", {
+        from: socket.id,
+        offer,
+      });
+    }
+  });
+
+  // Handle answering a call
+  socket.on("answer-call", ({ to, answer }) => {
+    io.to(to).emit("call-answered", {
+      from: socket.id,
+      answer,
+    });
+  });
+
+  // ICE candidate exchange
+  socket.on("ice-candidate", ({ to, candidate }) => {
+    io.to(to).emit("ice-candidate", {
+      from: socket.id,
+      candidate,
+    });
+  });
+
+
 });
 
 const PORT = process.env.PORT || 5000;
